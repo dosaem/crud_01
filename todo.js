@@ -255,21 +255,29 @@ console.log('delete 시작');
 
 // Delete 함수
 
-todoApp.delete(1);
-todoApp.delete([0, 2]);
+// todoApp.delete(1);
+// todoApp.delete([0, 2]);
 
 
+console.clear();
 
 // 시간 남으면
 
-// const newTodo = todoApp.read();
+const newTodo = todoApp.read();
+const log = a => console.log(a);
 
-// // 1. todos 객체 배열에 존재하는 모든 memo 값을 순회하며 거꾸로 출력하기
-// var memoArray = new Array()
-// for (var i = 0; i < newTodo.length; i++) {
-//   memoArray.push(newTodo[i]['memo'].split("").reverse().join(""));
-// }
-// console.log(memoArray);
+const prop = name => obj => obj[name];
+const hasProp = name => obj => !!obj[name];
+
+// 1. todos 객체 배열에 존재하는 모든 memo 값을 순회하며 거꾸로 출력하기
+
+const reverse = str => str.split("").reverse().join("");
+
+newTodo
+  .filter(hasProp("memo"))
+  .map(prop("memo"))
+  .map(reverse)
+  .forEach(log);
 
 
 // 2. status === done인 객체들을 찾아 객체 배열 만들기
