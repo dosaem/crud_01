@@ -299,3 +299,29 @@ log(newTodo
   .map(prop("id"))
   .reduce(add, 0)
 );
+
+
+// bind, apply, call
+function read(i) {
+  return this.arr[i];
+}
+
+const obj = {
+  arr: [0, 1, 2],
+  readBind: function (idx) {
+    const binded = read.bind(this);
+    return binded(idx);
+  },
+
+  readCall: function (idx) {
+    return read.call(this, idx);
+  },
+
+  readApply: function (idx) {
+    return read.apply(this, [idx]);
+  }
+}
+
+log(obj.readBind(0));
+log(obj.readCall(1));
+log(obj.readApply(2));
