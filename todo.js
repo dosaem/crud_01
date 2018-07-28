@@ -12,17 +12,17 @@
 // falsy: null
 
 
-function Task(params) {
+function Todo(params) {
   params = params || {};
 
-  this.id = Task.getNextId();
+  this.id = Todo.getNextId();
   this.title = params.title || ('할일' + this.id);
   this.author = params.author;
   this.status = params.status || 'todo'; // 'todo' || 'doing' || 'done'
   this.memo = params.memo;
 }
 
-Task.getNextId = (function () {
+Todo.getNextId = (function () {
   var id = 0;
 
   return function () {
@@ -50,8 +50,8 @@ var todoApp = {
   todos: [],
 
   create: function (arg) {
-    var push = function (task) {
-      this.todos.push(new Task(task));
+    var push = function (todo) {
+      this.todos.push(new Todo(todo));
     }.bind(this);
 
     // 인자 없거나
@@ -108,23 +108,23 @@ var todoApp = {
 
 
 
-  update: function () {
+  update: function (arg) {
     // todos 배열에 존재하는 todo 객체의 정보 수정
 
     /*
      *  사용 예시
      *  todoApp.update({id: 1, author: '서한샘', memo: 'javascript'});
      */
-    if (arguments[0] instanceof Array) {
-      for (var i = 0; i < this.todos.length; i++) {
-        for (var j = 0; j < arguments[0].length; j++) {
-          if (this.todos[i]['id'] == arguments[0][j]['id']) {
-            const newTodo2 = Object.assign(this.todos[i], arguments[0][j]);
-            console.log(newTodo2);
-          }
-          //else if(this.todos[i]['id'] =! arguments[0][j]['id'] || this.todos[i]['id'] == undefined  ) {}
-        }
-      }
+
+    const merge = props => {
+      const todo = this.todos.find(item => item.id === props.id);
+      todo instanceof Object && Object.assign(todo, props);
+    }
+
+    if (arg instanceof Array) {
+      arg.forEach(merge);
+    } else if (arg instanceof Object) {
+      merge(arg);
     }
   },
 
@@ -188,32 +188,32 @@ var todoApp = {
 
 // Create 함수
 
-// todoApp.create();
+todoApp.create();
 
-// todoApp.create({
-//   title: '공부',
-//   author: 'sdf',
-//   status: 'doing'
-// })
+todoApp.create({
+  title: '공부',
+  author: 'sdf',
+  status: 'doing'
+})
 
-// todoApp.create(
-//   [{
-//       title: '할일2',
-//       author: 'sdf',
-//       status: 'todo'
-//     },
-//     {
-//       title: '할일3',
-//       author: 'sdf',
-//       status: 'todo'
-//     },
-//     {
-//       title: '할일4',
-//       author: 'sdf',
-//       status: 'todo'
-//     }
-//   ]
-// )
+todoApp.create(
+  [{
+      title: '할일2',
+      author: 'sdf',
+      status: 'todo'
+    },
+    {
+      title: '할일3',
+      author: 'sdf',
+      status: 'todo'
+    },
+    {
+      title: '할일4',
+      author: 'sdf',
+      status: 'todo'
+    }
+  ]
+)
 
 
 
@@ -224,27 +224,31 @@ var todoApp = {
 // const todo1 = todoApp.read(0);
 // console.log(todo1);
 
-// const todo2 = todoApp.read([0,1]);
+// const todo2 = todoApp.read([0, 1]);
 // console.log(todo2);
 
-
+todoApp.update({
+  id: null,
+  memo: "할일 3임"
+})
 
 // Update 함수
-// todoApp.update(
-//   [
-//     {
-//     id: 0, 
-//     author: '서한샘', 
-//     memo: 'javascript',
-//     meuu : 'qweq'
-//     },
-//     {
-//     id: 2,
-//     author: '황유성', 
-//     memo: 'python'
-//     }
-//   ]
-// );
+todoApp.update(
+  [{
+      id: 0,
+      author: '서한샘',
+      memo: 'javascript',
+      meuu: 'qweq'
+    },
+    {
+      id: 2,
+      author: '황유성',
+      memo: 'python'
+    }
+  ]
+);
+
+console.log(todoApp.read());
 
 
 // Delete 함수
