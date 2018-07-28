@@ -16,46 +16,49 @@ function Task(params) {
   params = params || {};
 
   this.id = Task.getNextId();
-  this.title = params.title;
+  this.title = params.title || ('할일' + this.id);
   this.author = params.author;
-  this.status = params.status;
+  this.status = params.status || 'todo'; // 'todo' || 'doing' || 'done'
   this.memo = params.memo;
 }
 
 Task.getNextId = (function () {
-  let id = 0;
+  var id = 0;
 
   return function () {
     return id++;
   }
 })();
 
+var isNumber = function (num) {
+  return typeof num === 'number' && !Number.isNaN(num) && Number.isFinite(num);
+};
+
+
+// browser: window
+// node: global
+
 var todoApp = {
   userName: '서한샘',
   todos: [],
 
-  create: function () {
-    if (arguments.length > 0) {
-      if (arguments[0] instanceof Array) {
-        for (var i = 0; i < arguments[0].length; i++) {
-          arguments[0][i]['id'] = this.todos.length;
-          this.todos.push(arguments[0][i]);
-        }
+  create: function (arg) {
+    var push = function (task) {
+      this.todos.push(new Task(task));
+    }.bind(this);
 
-      } else {
-        arguments[0].id = this.todos.length;
-        this.todos.push(arguments[0]);
-      }
+    // 인자 없거나
+    if (arg === undefined) {
+      push({
+        author: this.userName
+      });
+    }
 
-
-    } else {
-      var newTodo = {
-        id: this.todos.length,
-        title: null,
-        autor: null,
-        status: 'todo'
-      };
-      this.todos.push(newTodo);
+    // 배열
+    if (arg instanceof Array) {
+      arg.forEach(push);
+    } else if (arg instanceof Object) {
+      push(arg);
     }
 
     // 조건 1: 함수에 인자를 전달하지 않으면 title과 author가 비어있는 todo 생성 (status: 'todo')
@@ -65,13 +68,11 @@ var todoApp = {
     // 조건 2: 함수에 todo 객체의 배열이 인자로 전달되면 현재 todos배열 뒤에 순차적으로 삽입
   },
 
-
-
   read: function (id) {
     // todos 배열에서 id에 해당하는 할 일 객체 찾아서 반환
-    if (id == undefined) {
-      return this.todos;
-    } else if (typeof id === 'number') {
+    if (id == undefined) return this.todos;
+
+    if (isNumber(id)) {
       for (var i = 0; i < this.todos.length; i++) {
         if (this.todos[i]['id'] == id) {
           //console.log(this.todos[i]);
@@ -185,17 +186,14 @@ var todoApp = {
 
 // todoApp.create();
 
-// todoApp.create(
-//   {
-//     title: '할일1',
-//     author: 'sdf',
-//     status: 'todo'
-//   }
-// )
+// todoApp.create({
+//   title: '공부',
+//   author: 'sdf',
+//   status: 'doing'
+// })
 
 // todoApp.create(
-//   [
-//     {
+//   [{
 //       title: '할일2',
 //       author: 'sdf',
 //       status: 'todo'
@@ -209,7 +207,7 @@ var todoApp = {
 //       title: '할일4',
 //       author: 'sdf',
 //       status: 'todo'
-//     } 
+//     }
 //   ]
 // )
 
@@ -257,14 +255,14 @@ var todoApp = {
 
 // 시간 남으면
 
-const newTodo = todoApp.read();
+// const newTodo = todoApp.read();
 
-// 1. todos 객체 배열에 존재하는 모든 memo 값을 순회하며 거꾸로 출력하기
-var memoArray = new Array()
-for (var i = 0; i < newTodo.length; i++) {
-  memoArray.push(newTodo[i]['memo'].split("").reverse().join(""));
-}
-console.log(memoArray);
+// // 1. todos 객체 배열에 존재하는 모든 memo 값을 순회하며 거꾸로 출력하기
+// var memoArray = new Array()
+// for (var i = 0; i < newTodo.length; i++) {
+//   memoArray.push(newTodo[i]['memo'].split("").reverse().join(""));
+// }
+// console.log(memoArray);
 
 
 // 2. status === done인 객체들을 찾아 객체 배열 만들기
