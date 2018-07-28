@@ -85,7 +85,7 @@ var todoApp = {
     // todos 배열에서 id에 해당하는 할 일 객체 찾아서 반환
     if (arg == undefined) return this.todos;
 
-    var findTodo = id => find(this.todos, id);
+    var findTodo = id => findById(this.todos, id);
 
     if (isNumber(arg)) {
       return findTodo(arg);
@@ -199,17 +199,17 @@ todoApp.create({
 todoApp.create(
   [{
       title: '할일2',
-      author: 'sdf',
+      author: '서한샘',
       status: 'todo'
     },
     {
       title: '할일3',
-      author: 'sdf',
+      author: '서한샘',
       status: 'todo'
     },
     {
       title: '할일4',
-      author: 'sdf',
+      author: '서한샘',
       status: 'todo'
     }
   ]
@@ -242,7 +242,7 @@ todoApp.update(
     },
     {
       id: 2,
-      author: '황유성',
+      author: '서한샘',
       memo: 'python'
     }
   ]
@@ -268,6 +268,9 @@ const log = a => console.log(a);
 
 const prop = name => obj => obj[name];
 const hasProp = name => obj => !!obj[name];
+const propEq = (key, val) => obj => obj[key] === val;
+
+const add = (a, b) => a + b;
 
 // 1. todos 객체 배열에 존재하는 모든 memo 값을 순회하며 거꾸로 출력하기
 
@@ -281,22 +284,18 @@ newTodo
 
 
 // 2. status === done인 객체들을 찾아 객체 배열 만들기
-
-// var stArray = new Array()
-// for(var i=0; i<newTodo.length; i++){
-//   if(newTodo[i]['status'] === 'done') {
-//     stArray.push(newTodo[i]);
-//   }
-// }
-//   console.log(stArray);
+newTodo.filter(propEq("status", "done"));
 
 
 // 3. author가 '서한샘'인 객체의 id 합 구하기
 
-// var sumId
-// for(var i=0; i<newTodo.length; i++){
-//   if(newTodo[i]['author'] == '서한샘') {
-//      sumId =+ newTodo[i]['id'];
-//   }
-// }
-// console.log(sumId);
+// [{id, author}, {id, author}, {id, author} ...]
+// [{id, '서한샘'}, {id, '서한샘'}, {id, '서한샘'}] // filter
+// [1, 2, 3] // map
+// 1 + 2 + 3 // reduce
+
+log(newTodo
+  .filter(propEq("author", "서한샘"))
+  .map(prop("id"))
+  .reduce(add, 0)
+);
