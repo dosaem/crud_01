@@ -13,13 +13,6 @@ var todoApp = {
       author: '서한샘',
       status: 'doing',
       memo: 'efg'
-    },
-    {
-      id: 2,
-      title: '할일2',
-      author: '서한샘',
-      status: 'done',
-      memo: "hi"
     }
   ],
 
