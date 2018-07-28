@@ -1,20 +1,38 @@
+// truthy falsy
+
+// 숫자
+// falsy: 0
+
+// 문자열
+// falsy: ""
+
+// undefined : falsy
+
+// Object
+// falsy: null
+
+
+function Task(params) {
+  params = params || {};
+
+  this.id = Task.getNextId();
+  this.title = params.title;
+  this.author = params.author;
+  this.status = params.status;
+  this.memo = params.memo;
+}
+
+Task.getNextId = (function () {
+  let id = 0;
+
+  return function () {
+    return id++;
+  }
+})();
+
 var todoApp = {
   userName: '서한샘',
-  todos: [{
-      id: 0,
-      title: '할일1',
-      author: '이도형',
-      status: 'done',
-      memo: 'abcd'
-    },
-    {
-      id: 1,
-      title: '할일2',
-      author: '서한샘',
-      status: 'doing',
-      memo: 'efg'
-    }
-  ],
+  todos: [],
 
   create: function () {
     if (arguments.length > 0) {
@@ -39,37 +57,6 @@ var todoApp = {
       };
       this.todos.push(newTodo);
     }
-
-    // const arg = arguments[0];
-
-    // const add = function(arr, todo) {
-    //   todo.id = arr.length;
-    //   arr.push(todo);
-    // };
-
-    // if (arguments.length > 0) {
-    //   if(arg instanceof Array) {
-    //     for(var i = 0; i < arg.length; i++) {
-    //       const todo = arg[i];
-
-    //       add(this.todos, todo);
-    //     }
-
-    //   } else {
-    //     add(this.todos, arg);
-    //   }
-
-
-    // } else {
-    //   var newTodo = {
-    //     title: null,
-    //     autor: null,
-    //     status: 'todo'
-    //   };
-
-    //   add(this.todos, newTodo);
-    // }
-
 
     // 조건 1: 함수에 인자를 전달하지 않으면 title과 author가 비어있는 todo 생성 (status: 'todo')
     // var todo = todoApp.create();
