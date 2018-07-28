@@ -118,7 +118,11 @@ var todoApp = {
 
     const merge = props => {
       const todo = this.todos.find(item => item.id === props.id);
-      todo instanceof Object && Object.assign(todo, props);
+
+      if (todo instanceof Object) {
+        Object.assign(todo, props);
+        console.log(todo.id);
+      }
     }
 
     if (arg instanceof Array) {
@@ -146,7 +150,7 @@ var todoApp = {
 
 
 
-  delete: function (id) {
+  delete: function (arg) {
     // id를 입력받아 todos배열에서 해당하는 객체를 삭제
 
     // var str = "삭제할 id를 입력해주세요";
@@ -154,7 +158,7 @@ var todoApp = {
     // const idx = this.todos.indexOf(content);
     // this.todos.splice(idx, idx+1);
 
-    if (typeof id === 'number') {
+    if (isNumber(arg)) {
       for (var i = 0; i < this.todos.length; i++) {
         for (var j = 0; j < id; j++) {
           if (this.todos[i]['id'] == id) {
@@ -163,7 +167,7 @@ var todoApp = {
           }
         }
       }
-    } else if (id instanceof Array) {
+    } else if (arg instanceof Array) {
       for (var i = 0; i < this.todos.length; i++) {
         for (var j = 0; j < id.length; j++) {
           if (this.todos[i]['id'] == id[j]) {
