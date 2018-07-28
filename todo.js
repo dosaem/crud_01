@@ -42,6 +42,12 @@ var isNotUndefined = function (val) {
   return !isUndefined(val);
 }
 
+var findById = function (list, id) {
+  return list.find(function (item) {
+    return item.id === id;
+  });
+};
+
 // browser: window
 // node: global
 
@@ -79,16 +85,12 @@ var todoApp = {
     // todos 배열에서 id에 해당하는 할 일 객체 찾아서 반환
     if (arg == undefined) return this.todos;
 
-    var findById = function (id) {
-      return this.todos.find(function (item) {
-        return item.id === id;
-      });
-    }.bind(this);
+    var findTodo = id => find(this.todos, id);
 
     if (isNumber(arg)) {
-      return findById(arg);
+      return findTodo(arg);
     } else if (arg instanceof Array) {
-      return arg.map(findById).filter(isNotUndefined);
+      return arg.map(findTodo).filter(isNotUndefined);
     }
 
 
@@ -117,7 +119,7 @@ var todoApp = {
      */
 
     const merge = props => {
-      const todo = this.todos.find(item => item.id === props.id);
+      const todo = findById(this.todos, props.id);
 
       if (todo instanceof Object) {
         Object.assign(todo, props);
@@ -158,32 +160,26 @@ var todoApp = {
     // const idx = this.todos.indexOf(content);
     // this.todos.splice(idx, idx+1);
 
-    if (isNumber(arg)) {
-      for (var i = 0; i < this.todos.length; i++) {
-        for (var j = 0; j < id; j++) {
-          if (this.todos[i]['id'] == id) {
-            console.log(id);
-            delete this.todos[i];
-          }
-        }
-      }
-    } else if (arg instanceof Array) {
-      for (var i = 0; i < this.todos.length; i++) {
-        for (var j = 0; j < id.length; j++) {
-          if (this.todos[i]['id'] == id[j]) {
-            console.log(id);
-            this.todos.splice([i], 1);
-          }
-        }
+    const removeAt = index => this.todos.splice(index, 1);
+
+    const removeById = id => {
+      const index = this.todos.findIndex(item => item.id === id);
+
+      if (index !== -1) {
+        removeAt(index);
+        console.log(id);
       }
     }
 
+    if (isNumber(arg)) {
+      removeById(arg);
+    } else if (arg instanceof Array) {
+      arg.forEach(removeById);
+    }
 
     // 조건 1. 객체 배열을 함수 인자로 받은 경우 해당하는 객체 모두 삭제
     // 조건 2. 삭제 된 객체 id console.log로 출력 (여러개면 배열로)
     // 조건 3. 없는 id인 경우 무시
-
-
   }
 };
 
@@ -255,13 +251,12 @@ todoApp.update(
 console.log(todoApp.read());
 
 
+console.log('delete 시작');
+
 // Delete 함수
 
-//todoApp.delete(1);
-//todoApp.delete([0,2]);
-
-// Rememo 함수
-//todoApp.rememo();
+todoApp.delete(1);
+todoApp.delete([0, 2]);
 
 
 
