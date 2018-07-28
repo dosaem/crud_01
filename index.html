@@ -2,9 +2,44 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <script src="todo.js"></script>
+        
     </head>
     <body>
-        Index
+        <div>
+            <label for"title">제목</label>
+            <input type="text" id="title" />
+
+            <label for"author">작성자</label>
+            <input type="text" id="author"/>
+
+            <label for="memo">메모</label>
+            <textarea id="memo"></textarea>
+
+            <div>
+                <input type="radio" value="todo" name="status"/> todo
+                <input type="radio" value="doing" name="status"/> doing
+                <input type="radio" value="done" name="status"/> done
+            </div>
+
+            <button>확인</button>
+        </div>
+
+        <ul>
+            <li>
+                <div class="todo">
+                    <h3 class="title">todo.js html 연결하기</h3>
+
+                    <p class="author">서한샘</p>
+
+                    <p class="memo">
+                        존나 어려움
+                    </p>
+
+                    <p class="status">안함</p>
+                </div>
+            </li>
+        </ul>
+
+        <script src="todo.js"></script>
     </body>
 </html>
