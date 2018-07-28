@@ -34,6 +34,13 @@ var isNumber = function (num) {
   return typeof num === 'number' && !Number.isNaN(num) && Number.isFinite(num);
 };
 
+var isUndefined = function (val) {
+  return val === undefined;
+}
+
+var isNotUndefined = function (val) {
+  return !isUndefined(val);
+}
 
 // browser: window
 // node: global
@@ -68,29 +75,26 @@ var todoApp = {
     // 조건 2: 함수에 todo 객체의 배열이 인자로 전달되면 현재 todos배열 뒤에 순차적으로 삽입
   },
 
-  read: function (id) {
+  read: function (arg) {
     // todos 배열에서 id에 해당하는 할 일 객체 찾아서 반환
-    if (id == undefined) return this.todos;
+    if (arg == undefined) return this.todos;
 
-    if (isNumber(id)) {
-      for (var i = 0; i < this.todos.length; i++) {
-        if (this.todos[i]['id'] == id) {
-          //console.log(this.todos[i]);
-          return this.todos[i];
-        }
-      }
-    } else if (id instanceof Array) {
-      var newId = new Array;
-      for (var i = 0; i < this.todos.length; i++) {
-        for (var j = 0; j < id.length; j++) {
-          if (this.todos[i]['id'] == id[j]) {
-            newId[i] = this.todos[i];
-            //console.log(this.todos[i]);
-          }
-        }
-      }
-      return newId;
+    var findById = function (id) {
+      return this.todos.find(function (item) {
+        return item.id === id;
+      });
+    }.bind(this);
+
+    if (isNumber(arg)) {
+      return findById(arg);
+    } else if (arg instanceof Array) {
+      return arg.map(findById).filter(isNotUndefined);
     }
+
+
+    // arg = [null, 2, "3", 4];
+    // res = [undefined, {id:2}, undefined, {id:4}]
+    // [{id: 2}, {id: 4}]
 
 
     // 조건 1: 함수의 첫 번째 인자가 숫자 일 때 id로 간주하고 id에 해당하는 객체 반환
