@@ -3,43 +3,192 @@
     <head>
         <meta charset="utf-8">
         
+        <style>
+            /* http://meyerweb.com/eric/tools/css/reset/ 
+            v2.0 | 20110126
+            License: none (public domain)
+            */
+
+            html, body, div, span, applet, object, iframe,
+            h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+            a, abbr, acronym, address, big, cite, code,
+            del, dfn, em, img, ins, kbd, q, s, samp,
+            small, strike, strong, sub, sup, tt, var,
+            b, u, i, center,
+            dl, dt, dd, ol, ul, li,
+            fieldset, form, label, legend,
+            table, caption, tbody, tfoot, thead, tr, th, td,
+            article, aside, canvas, details, embed, 
+            figure, figcaption, footer, header, hgroup, 
+            menu, nav, output, ruby, section, summary,
+            time, mark, audio, video {
+                margin: 0;
+                padding: 0;
+                border: 0;
+                font-size: 100%;
+                font: inherit;
+                vertical-align: baseline;
+            }
+            /* HTML5 display-role reset for older browsers */
+            article, aside, details, figcaption, figure, 
+            footer, header, hgroup, menu, nav, section {
+                display: block;
+            }
+            body {
+                line-height: 1;
+            }
+            ol, ul {
+                list-style: none;
+            }
+            blockquote, q {
+                quotes: none;
+            }
+            blockquote:before, blockquote:after,
+            q:before, q:after {
+                content: '';
+                content: none;
+            }
+            table {
+                border-collapse: collapse;
+                border-spacing: 0;
+            }
+        </style>
+
+
+        <style>
+            * {
+                box-sizing: border-box; 
+            }
+
+            html, body {
+                width: 100%;
+                height: 100%;
+            }
+
+            body > * {
+              height: 100%;
+              float: left;
+            }
+
+            button {
+                -webkit-appearance: none;
+                padding: 0;
+                margin: 0;
+                border: 0;
+            }
+
+
+
+
+            .left-section {
+                width: 30%;
+                padding: 30px;
+                background-color: #e9ecef;
+            }
+
+            .left-section > * {
+                display: block;
+            }
+
+            .left-section > input,
+            .left-section > textarea,
+            .left-section > .status-item  {
+                margin-bottom: 15px;
+            }
+
+            .left-section > input,
+            .left-section > textarea {
+                width: 100%;
+                height: 30px;
+            }
+
+            .left-section > textarea {
+                height: 100px;
+                resize: none;
+            }
+
+            .status-item {
+                display: inline-block;
+            }
+
+            .right-section {
+                width: 70%;
+            }
+
+            .btn-create {
+                width: 120px;
+                height: 40px;
+                margin: 0 auto;
+
+                font-size: 16px;
+                border: 1px solid #adb5bd;
+                background-color: #f8f9fa;
+
+                cursor: pointer;
+            }
+
+            .right-section {
+                padding: 30px;
+            }
+
+            .todo {
+                display: inline-block;
+                background-color: #5f3dc4;
+                color: #FFF;
+                padding: 15px;
+                border-radius: 10px;
+            }
+
+            .todo .title {
+                font-size: 18px;
+                font-weight: 600;
+                padding-bottom: 8px;
+                margin-bottom: 8px;
+
+                border-bottom: 1px solid #FFF;
+            }
+
+            .todo .author {
+                font-size: 12px;
+                text-align: right;
+            }
+
+        </style>
     </head>
     <body>
-        <div>
+        <form class="left-section">
             <label for"title">제목</label>
-            <input type="text" id="title" />
+            <input type="text" name="title" id="title" placeholder="제목을 입력해주세요." />
 
             <label for"author">작성자</label>
-            <input type="text" id="author"/>
+            <input type="text" name="author" id="author" />
 
             <label for="memo">메모</label>
-            <textarea id="memo"></textarea>
+            <textarea name="memo" id="memo"></textarea>
 
-            <div>
-                <input type="radio" value="todo" name="status"/> todo
-                <input type="radio" value="doing" name="status"/> doing
-                <input type="radio" value="done" name="status"/> done
+            <div class="status-item">
+                <input type="radio" value="todo" name="status" id="status_todo" checked/>
+                <label for="status_todo">시작전</label>
+            </div>
+            
+            <div class="status-item">
+                <input type="radio" value="doing" name="status" id="status_doing"/>
+                <label for="status_doing">진행중</label>
+            </div>
+            
+
+            <div class="status-item">
+                <input type="radio" value="done" name="status" id="status_done"/>
+                <label for="status_done">완료</label>
             </div>
 
-            <button>확인</button>
-        </div>
+            <button type="button" class="btn-create">확인</button>
+        </form>
 
-        <ul>
-            <li>
-                <div class="todo">
-                    <h3 class="title">todo.js html 연결하기</h3>
+        <ul class="right-section todo-list"></ul>
 
-                    <p class="author">서한샘</p>
-
-                    <p class="memo">
-                        존나 어려움
-                    </p>
-
-                    <p class="status">안함</p>
-                </div>
-            </li>
-        </ul>
-
+        <script src="partial.js"></script>
         <script src="todo.js"></script>
+        <script src="main.js"></script>
     </body>
 </html>
